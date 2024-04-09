@@ -12,6 +12,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "declaration": true,
+    "removeComments": false,
     "emitDeclarationOnly": true,
 
     // Best practices

@@ -4,7 +4,7 @@ export class Roll {
     static minMax(dice: any, modifier: any): any[];
     constructor(dice?: string, modifier?: number);
     modifier: number;
-    dice: number;
+    faces: number;
     results: any[];
     result: number;
 }

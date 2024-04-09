@@ -12,18 +12,16 @@ var Dice;
 // src/roll.ts
 class Roll {
   modifier;
-  dice;
+  faces;
   results = [];
   result = 0;
   constructor(dice = "1d20", modifier = 0) {
     this.modifier = modifier;
     const [quantity, d] = dice.split("d");
     const validDice = [4, 6, 8, 10, 12, 20];
-    this.dice = validDice.includes(Number(d)) ? Number(d) : 20;
-    let rolls = Number(quantity) ?? 1;
-    while (--rolls >= 0) {
-      this.results.push(Roll.d(this.dice));
-    }
+    this.faces = validDice.includes(Number(d)) ? Number(d) : 20;
+    const length = Number(quantity) ?? 1;
+    this.results = Array.from({ length }, () => Roll.d(this.faces));
     this.result = this.results.reduce((acc, cur) => acc + cur, 0) + this.modifier;
   }
   static d(dice) {
