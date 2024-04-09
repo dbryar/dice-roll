@@ -195,6 +195,17 @@ describe("Counting results of 10d6", () => {
   it("should return a count of zero for a non-existent face", () => {
     expect(roll.count(7)).toEqual(0)
   })
+
+  it("should return a count of results equal to '3'", () => {
+    const count = roll.results.filter((r) => r == 3).length
+    expect(roll.count("=3")).toEqual(count)
+    expect(roll.count("3")).toEqual(count)
+  })
+
+  it("should return a count of results greater than 3", () => {
+    const count = roll.results.filter((r) => r > 3).length
+    expect(roll.count(">3")).toEqual(count)
+  })
 })
 
 describe("Filtering results", () => {

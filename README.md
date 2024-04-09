@@ -87,7 +87,7 @@ The resulting object after creation also contains helper methods to assist in qu
 - `count` return a list of each of the counts for each face, including zeros, and
 - `where` filters using simple mathematical notation
 
-````js
+```js
 const roll = new Roll("6d8", 2).results // [ 2, 5, 3, 3, 8, 6 ]
 
 roll.max() // 8
@@ -96,9 +96,12 @@ roll.min() // 2
 roll.count() // { 1: 0, 2: 1, 3: 2, 4: 0, 5: 1, 6: 1, 7: 0, 8: 1 }
 roll.count(8) // 1
 roll.count()[8] // 1
+roll.count(">5") // 2
 
 roll.where("<=3").results // [ 2, 3, 3 ]
-roll.where(">=5").where("<8").result // 13 (11 + 2)
+
+roll.where(">=5").where("<8").result // 13 (5 + 6 = 11) + 2
+
 roll.where("<5").max() // 3
 ```
 
@@ -116,7 +119,7 @@ For more information, please visit the GitHub repository.
 
 ```sh
 bun run test
-````
+```
 
 ```text
 src/test/roll.spec.ts:
@@ -138,7 +141,7 @@ src/test/roll.spec.ts:
 ✓ Specify a quantity of Dice > should roll 2d12 with a -2 modifier
 ✓ Rolling 32d6 > should have a result in the middle third of the mathematical spread
 ✓ Rolling 32d6 > should have a maximum roll count grater than the minimum roll count
-✓ Rolling 32d6 > should have a non-uniform distribution ▃▇▆▆▆▇
+✓ Rolling 32d6 > should have a non-uniform distribution ▅▆▅▇▆▃
 ✓ Min/Max results > should return the minimum roll from the set of 4d6
 ✓ Min/Max results > should return the maximum roll from the set of 4d6
 ✓ Counting results of 10d6 > should count each of the '1' results
@@ -154,58 +157,60 @@ src/test/roll.spec.ts:
 ✓ Counting results of 10d6 > should be able to directly access a count for face '5'
 ✓ Counting results of 10d6 > should be able to directly access a count for face '6'
 ✓ Counting results of 10d6 > should return a count of zero for a non-existent face
+✓ Counting results of 10d6 > should return a count of results equal to '3'
+✓ Counting results of 10d6 > should return a count of results greater than 3
 ✓ Filtering results > should filter results where the roll is greater than 3
 ✓ Filtering results > should filter results where the roll is equal to 6
 ✓ Filtering results > should filter results where the roll is less than or equal to 5
 ✓ Filtering results > should filter results where the roll is greater than 3 and less than 5
 ✓ Filtering results > should filter the results and return a new sum result using the original modifier
-✓ Statistical Probability > should randomly distribute a d4 over 64 rolls ▇▃▆▅
+✓ Statistical Probability > should randomly distribute a d4 over 64 rolls ▅▅▇▃
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d4 over 256 rolls ▃▆▇▅
+✓ Statistical Probability > should randomly distribute a d4 over 256 rolls ▆▃▃▇
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d4 over 4096 rolls ▃▆▇▃
+✓ Statistical Probability > should randomly distribute a d4 over 4096 rolls ▅▃▃▇
 ✓ Statistical Probability > should have no more than 1 uniform counts
-✓ Statistical Probability > should randomly distribute a d4 over 65536 rolls ▅▅▃▇
+✓ Statistical Probability > should randomly distribute a d4 over 65536 rolls ▆▇▃▇
 ✓ Statistical Probability > should have no more than 1 uniform counts
-✓ Statistical Probability > should randomly distribute a d6 over 64 rolls ▃▅▆▇▅▇
+✓ Statistical Probability > should randomly distribute a d6 over 64 rolls ▇▃▆▃▆▃
 ✓ Statistical Probability > should have no more than 3 uniform counts
-✓ Statistical Probability > should randomly distribute a d6 over 256 rolls ▅▅▃▇▅▇
+✓ Statistical Probability > should randomly distribute a d6 over 256 rolls ▆▆▅▇▇▃
 ✓ Statistical Probability > should have no more than 3 uniform counts
-✓ Statistical Probability > should randomly distribute a d6 over 4096 rolls ▅▅▃▆▇▃
+✓ Statistical Probability > should randomly distribute a d6 over 4096 rolls ▆▆▆▇▆▃
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d6 over 65536 rolls ▇▇▆▃▅▆
+✓ Statistical Probability > should randomly distribute a d6 over 65536 rolls ▃▇▃▃▆▅
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d8 over 64 rolls ▅▇▃▆▅▆▇▅
+✓ Statistical Probability > should randomly distribute a d8 over 64 rolls ▇▆▆▅▆▆▃▅
 ✓ Statistical Probability > should have no more than 4 uniform counts
-✓ Statistical Probability > should randomly distribute a d8 over 256 rolls ▇▆▅▅▃▇▆▆
+✓ Statistical Probability > should randomly distribute a d8 over 256 rolls ▅▆▅▇▅▃▅▆
 ✓ Statistical Probability > should have no more than 3 uniform counts
-✓ Statistical Probability > should randomly distribute a d8 over 4096 rolls ▃▅▅▅▅▇▅▅
+✓ Statistical Probability > should randomly distribute a d8 over 4096 rolls ▃▃▅▅▇▇▅▅
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d8 over 65536 rolls ▇▅▆▅▃▆▃▆
+✓ Statistical Probability > should randomly distribute a d8 over 65536 rolls ▇▃▅▇▆▇▇▆
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d10 over 64 rolls ▅▆▃▆▅▅▅▇▅▅
+✓ Statistical Probability > should randomly distribute a d10 over 64 rolls ▅▃▆▇▃▆▃▅▆▇
 ✓ Statistical Probability > should have no more than 5 uniform counts
-✓ Statistical Probability > should randomly distribute a d10 over 256 rolls ▅▇▆▆▆▃▆▇▇▆
+✓ Statistical Probability > should randomly distribute a d10 over 256 rolls ▇▆▃▆▆▅▆▆▆▆
 ✓ Statistical Probability > should have no more than 4 uniform counts
-✓ Statistical Probability > should randomly distribute a d10 over 4096 rolls ▃▆▆▅▅▅▇▅▃▃
+✓ Statistical Probability > should randomly distribute a d10 over 4096 rolls ▆▃▃▇▇▃▆▆▃▇
 ✓ Statistical Probability > should have no more than 3 uniform counts
-✓ Statistical Probability > should randomly distribute a d10 over 65536 rolls ▅▆▃▆▆▇▃▅▆▇
+✓ Statistical Probability > should randomly distribute a d10 over 65536 rolls ▆▆▃▆▅▆▅▆▆▇
 ✓ Statistical Probability > should have no more than 2 uniform counts
-✓ Statistical Probability > should randomly distribute a d12 over 64 rolls ▅▆▆▅▇▇▃▅▆▇▇▆
+✓ Statistical Probability > should randomly distribute a d12 over 64 rolls ▆▅▆▆▆▃▆▅▅▇▅▃
 ✓ Statistical Probability > should have no more than 6 uniform counts
-✓ Statistical Probability > should randomly distribute a d12 over 256 rolls ▇▅▅▇▅▃▅▇▆▅▆▃
+✓ Statistical Probability > should randomly distribute a d12 over 256 rolls ▅▃▆▆▅▃▃▇▅▅▆▅
 ✓ Statistical Probability > should have no more than 5 uniform counts
-✓ Statistical Probability > should randomly distribute a d12 over 4096 rolls ▇▆▆▆▆▇▅▃▇▃▅▃
+✓ Statistical Probability > should randomly distribute a d12 over 4096 rolls ▇▆▅▇▆▅▆▇▆▆▇▃
 ✓ Statistical Probability > should have no more than 3 uniform counts
-✓ Statistical Probability > should randomly distribute a d12 over 65536 rolls ▅▃▆▇▅▅▆▅▃▅▃▃
+✓ Statistical Probability > should randomly distribute a d12 over 65536 rolls ▅▃▃▅▇▅▅▃▅▃▆▇
 ✓ Statistical Probability > should have no more than 3 uniform counts
-✓ Statistical Probability > should randomly distribute a d20 over 64 rolls ▅▅▅▅▆▇▇▅▆▃▅▅▅▅▆▅▅▃▆▆
+✓ Statistical Probability > should randomly distribute a d20 over 64 rolls ▇▃▆▅▇▅▃▅▅▅▅▆▅▅▅▅▆▅▆▆
 ✓ Statistical Probability > should have no more than 10 uniform counts
-✓ Statistical Probability > should randomly distribute a d20 over 256 rolls ▆▆▅▆▆▅▃▇▆▅▅▃▅▃▅▆▆▇▅▇
+✓ Statistical Probability > should randomly distribute a d20 over 256 rolls ▅▆▆▆▇▅▅▆▆▅▆▆▅▆▅▅▆▅▆▃
 ✓ Statistical Probability > should have no more than 8 uniform counts
-✓ Statistical Probability > should randomly distribute a d20 over 4096 rolls ▅▃▆▅▅▇▅▅▆▅▆▅▅▃▅▅▃▅▆▅
+✓ Statistical Probability > should randomly distribute a d20 over 4096 rolls ▅▆▅▅▅▆▆▇▆▇▇▅▇▅▆▅▆▃▆▅
 ✓ Statistical Probability > should have no more than 5 uniform counts
-✓ Statistical Probability > should randomly distribute a d20 over 65536 rolls ▃▆▆▃▅▆▇▇▆▃▃▅▆▆▅▃▇▆▅▅
+✓ Statistical Probability > should randomly distribute a d20 over 65536 rolls ▆▆▇▆▆▇▆▆▅▅▆▇▆▇▆▃▃▅▃▃
 ✓ Statistical Probability > should have no more than 4 uniform counts
 --------------|---------|---------|-------------------
 File          | % Funcs | % Lines | Uncovered Line #s
@@ -216,8 +221,8 @@ All files     |  100.00 |  100.00 |
  src/roll.ts  |  100.00 |  100.00 |
 --------------|---------|---------|-------------------
 
- 87 pass
+ 89 pass
  0 fail
- 606 expect() calls
-Ran 87 tests across 1 files. [35.00ms]
+ 609 expect() calls
+Ran 89 tests across 1 files. [31.00ms]
 ```

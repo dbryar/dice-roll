@@ -48,16 +48,18 @@ export class Roll {
 
   /**
    * return a count of each result in the set
-   * @param where - filter the results by a condition
+   * @param where - filter the results by a face, or a condition
    * @example new Roll("3d6").count() => { 1: 2, 2: 0, 3: 0, 4: 1, 5: 1, 6: 0 }
+   * @example new Roll("3d6").count(4) => 1
+   * @example new Roll("3d6").count(">3") => 2
    **/
-  count(face?: number) {
+  count(where?: number | string) {
     const count: number[] = this.results.reduce((acc, v) => {
       acc[v - 1]++
       return acc
     }, Array(this.faces).fill(0))
     const faceCount = count.reduce((acc, cur, i) => ({ ...acc, [i + 1]: cur }), {} as Record<number, number>)
-    return typeof face == "number" ? faceCount[face] ?? 0 : faceCount
+    return where === undefined ? faceCount : typeof where == "number" ? faceCount[where] ?? 0 : this.where(where).results.length
   }
 
   /**
@@ -67,8 +69,8 @@ export class Roll {
    * @example new Roll("3d6").where(">2").where("<5").results => [4]
    **/
   where(where: string): Roll {
-    const [_, op, val] = where.match(/([><=]+)(\d+)/) ?? []
-    const fn = (a: number, b: number) => eval(`${a} ${op == "=" ? "==" : op} ${b}`)
+    const [_, op, val] = where.match(/([><=]+)?(\d+)/) ?? []
+    const fn = (a: number, b: number) => eval(`${a} ${!op || op == "=" ? "==" : op} ${b}`)
     const results = this.results.filter((r) => fn(r, Number(val)))
     const result = results.reduce((acc, cur) => acc + cur, 0) + this.modifier
     return { ...this, results, result, min: this.min, max: this.max, count: this.count, where: this.where }
