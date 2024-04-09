@@ -1,0 +1,38 @@
+{
+  "name": "dice-roll",
+  "author": {
+    "name": "Daniel Bryar",
+    "email": "dbryar@gmail.com"
+  },
+  "module": "dice-roll.js",
+  "main": "dice-roll.js",
+  "types": "dice-roll.d.ts",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A simple dice rolling library",
+  "license": "MIT",
+  "scripts": {
+    "build": "bun build --target=node ./src/index.ts --outfile=dice-roll.js && bun run build:declaration",
+    "build:declaration": "tsc",
+    "test": "bun test --coverage"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbryar/dice-roll.git"
+  },
+  "keywords": [
+    "dice",
+    "roll",
+    "random"
+  ],
+  "files": [
+    "dice-roll.js",
+    "dice-roll.d.ts"
+  ]
+}
