@@ -7,7 +7,7 @@ The Dice Rolls library is a lightweight, dependency-free tool designed to facili
 ### Features
 
 - Simple syntax for specifying the number and type of dice to roll.
-- Roll any quantity of dice, with or without a modifer.
+- Roll any quantity of dice, with or without a modifier.
 - Get a total result, or an array of results representing each roll.
 - Static helpers for min/max possibilities, and single roll.
 - Class helpers for min/max results, counts, and result filtering
@@ -15,7 +15,7 @@ The Dice Rolls library is a lightweight, dependency-free tool designed to facili
 
 ### Installation
 
-To use the Dice Roll Library in your project, simply add the package to your project and include it in your project source.
+To use the Dice Rolls Library in your project, simply add the package to your project and include it in your project source.
 
 ```sh
 bun add dice-rolls@latest
@@ -27,9 +27,9 @@ import Roll from "dice-rolls"
 
 ### Usage
 
-Using the Dice Rolls Library is straightforward. Simply create a new `Roll` object with the desired dice notation, and call the result. The rolls are executed on contruction of the object and are near instantly available. Trying to roll a non-defined dice will roll a d20 instead, because errors aren't desireable in a simple library. And since the project is TypeScript native, it ships with definitions so the `Dice` definition lists only the valid dice faces of 4, 6, 8, 10, 12 and 20.
+Using the Dice Rolls Library is straightforward. Simply create a new `Roll` object with the desired dice notation, and call the result. The rolls are executed on construction of the object and are near instantly available. Trying to roll a non-defined dice will roll a d20 instead, because errors aren't desireable in a simple library. And since the project is TypeScript native, it ships with definitions so the `Dice` definition lists only the valid dice faces of 4, 6, 8, 10, 12 and 20.
 
-1. In this example, `3d6` indicates rolling three six-sided dice. Three rolls are executed on contruction and the results are immediatly available.
+1. In this example, `3d6` indicates rolling three six-sided dice. Three rolls are executed on construction and the results are immediately available.
 
 ```js
 // Create a new Roll object with 3d6 notation
@@ -65,7 +65,7 @@ The resulting object from calling a `new Roll()` contains the following `readonl
 - `result` - the total of the dice rolls, plus the modifier.
 - `results` - an array of numbers representing each dice roll.
 - `faces` - the number of faces on the dice rolled.
-- `modifier` - if defeined, the numeric value added to the results to give the final result. Otherwise `undefined`
+- `modifier` - if defined, the numeric value added to the results to give the final result. Otherwise `undefined`
 
 #### Helpers
 
@@ -115,7 +115,7 @@ The Dice Rolls Library is open source and released under the Apache License, Ver
 
 For more information, please visit the GitHub repository.
 
-#### Tests
+### Tests
 
 ```sh
 bun run test
