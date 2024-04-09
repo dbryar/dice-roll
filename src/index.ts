@@ -1,8 +1,6 @@
 /**
  * Source: @dbryar/dice-roll
  *
- * Copyright 2024 Daniel Bryar [AU]
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License in the root of this project, or at

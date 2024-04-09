@@ -5,7 +5,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "allowJs": true,
+    "allowJs": false,
 
     // Bundler mode
     "moduleResolution": "bundler",
@@ -13,6 +13,8 @@
     "verbatimModuleSyntax": true,
     "declaration": true,
     "removeComments": false,
+    "outDir": "dist/types",
+    "rootDir": "src",
     "emitDeclarationOnly": true,
 
     // Best practices
@@ -25,5 +27,5 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "exclude": ["node_modules", "src/**/*.ts", "*.d.ts"]
+  "exclude": ["node_modules", "**/test", "**.spec.ts", "*.d.ts"]
 }

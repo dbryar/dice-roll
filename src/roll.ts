@@ -30,8 +30,8 @@ export class Roll {
    * Return the lower and upper values of a combined roll, with optional modifier
    * @example Roll.minMax("3d6", 1) => [4, 19]
    **/
-  static minMax(dice: string, modifier?: number): [number, number] {
-    const mod = modifier || 0
+  static minMax(dice: string, modifier: number = 0): [number, number] {
+    const mod = modifier
     const [min, max] = dice.split("d").map((v, i, a) => (i == 0 ? Number(v) : Number(v) * Number(a[0])))
     return [min + mod, max + mod]
   }
