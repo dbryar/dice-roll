@@ -4,15 +4,15 @@
     "name": "Daniel Bryar",
     "email": "dbryar@gmail.com"
   },
-  "module": "dist/dice-roll.js",
-  "main": "dist/dice-roll.js",
+  "module": "dist/dice-rolls.js",
+  "main": "dist/dice-rolls.js",
   "types": "dist/types/index.d.ts",
   "type": "module",
   "version": "1.0.2",
   "description": "A simple dice rolling library",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "bun build --target=node ./src/index.ts --outfile=dist/dice-roll.js && bun run build:declaration",
+    "build": "bun build --target=node ./src/index.ts --outfile=dist/dice-rolls.js && bun run build:declaration",
     "build:declaration": "rm -rf dist/types && tsc",
     "test": "bun test --coverage"
   },
@@ -31,7 +31,7 @@
     "random"
   ],
   "files": [
-    "dice-roll.js",
-    "dice-roll.d.ts"
+    "dist/dice-rolls.js",
+    "dist/types/*.d.ts"
   ]
 }

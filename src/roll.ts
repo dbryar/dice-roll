@@ -35,4 +35,42 @@ export class Roll {
     const [min, max] = dice.split("d").map((v, i, a) => (i == 0 ? Number(v) : Number(v) * Number(a[0])))
     return [min + mod, max + mod]
   }
+
+  /** return the lowest result in the set */
+  min(): number {
+    return Math.min(...this.results)
+  }
+
+  /** return the highest result in the set */
+  max(): number {
+    return Math.max(...this.results)
+  }
+
+  /**
+   * return a count of each result in the set
+   * @param where - filter the results by a condition
+   * @example new Roll("3d6").count() => { 1: 2, 2: 0, 3: 0, 4: 1, 5: 1, 6: 0 }
+   **/
+  count(face?: number) {
+    const count: number[] = this.results.reduce((acc, v) => {
+      acc[v - 1]++
+      return acc
+    }, Array(this.faces).fill(0))
+    const faceCount = count.reduce((acc, cur, i) => ({ ...acc, [i + 1]: cur }), {} as Record<number, number>)
+    return typeof face == "number" ? faceCount[face] ?? 0 : faceCount
+  }
+
+  /**
+   * return a new Roll with a filtered result set where the condition is met
+   * @example new Roll("3d6").where(">3").results => [5, 4]
+   * @example new Roll("3d6").where("=6").results => []
+   * @example new Roll("3d6").where(">2").where("<5").results => [4]
+   **/
+  where(where: string): Roll {
+    const [_, op, val] = where.match(/([><=]+)(\d+)/) ?? []
+    const fn = (a: number, b: number) => eval(`${a} ${op == "=" ? "==" : op} ${b}`)
+    const results = this.results.filter((r) => fn(r, Number(val)))
+    const result = results.reduce((acc, cur) => acc + cur, 0) + this.modifier
+    return { ...this, results, result, min: this.min, max: this.max, count: this.count, where: this.where }
+  }
 }

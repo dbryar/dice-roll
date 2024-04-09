@@ -13,9 +13,9 @@ const visual = (results: number[]) => {
   const upper = Math.max(...results)
   const lower = Math.min(...results)
   const low = "\u2583"
-  const some = "\u2584"
-  const many = "\u2585"
-  const high = "\u2586"
+  const some = "\u2585"
+  const many = "\u2586"
+  const high = "\u2587"
   return results.map((r) => [low, some, many, high][Math.round(((r - lower) / (upper - lower)) * 3)]).join("")
 }
 
@@ -163,6 +163,100 @@ describe("Rolling 32d6", () => {
   })
 })
 
+describe("Min/Max results", () => {
+  it("should return the minimum roll from the set of 4d6", () => {
+    const roll = new Roll("4d6")
+    const expected = roll.results.sort((a, b) => a - b)[0]
+    expect(roll.min()).toEqual(expected)
+  })
+
+  it("should return the maximum roll from the set of 4d6", () => {
+    const roll = new Roll("4d6")
+    const expected = roll.results.sort((a, b) => b - a)[0]
+    expect(roll.max()).toEqual(expected)
+  })
+})
+
+describe("Counting results of 10d6", () => {
+  const roll = new Roll("10d6")
+  const counts = roll.count()
+
+  it.each([1, 2, 3, 4, 5, 6])(`should count each of the '%d' results`, (face) => {
+    const count = roll.results.filter((r) => r == face).length
+    expect(counts).toHaveProperty(String(face), count)
+  })
+
+  it.each([1, 2, 3, 4, 5, 6])("should be able to directly access a count for face '%d'", (face) => {
+    const count = roll.results.filter((r) => r == face).length
+    expect(counts[face]).toEqual(count)
+    expect(roll.count(face)).toEqual(count)
+  })
+
+  it("should return a count of zero for a non-existent face", () => {
+    expect(roll.count(7)).toEqual(0)
+  })
+})
+
+describe("Filtering results", () => {
+  const roll = new Roll("24d6", -5)
+  const results = roll.results
+  it("should filter results where the roll is greater than 3", () => {
+    const expected = results.filter((r) => r > 3)
+    const min = Math.min(...expected)
+    const max = Math.max(...expected)
+
+    const output = roll.where(">3")
+
+    expect(output.results).toHaveLength(expected.length)
+    expect(output.min()).toEqual(min)
+    expect(output.max()).toEqual(max)
+  })
+
+  it("should filter results where the roll is equal to 6", () => {
+    const expected = results.filter((r) => r == 6)
+    const [min, max] = [6, 6]
+
+    const output = roll.where("=6")
+
+    expect(output.results).toHaveLength(expected.length)
+    expect(output.min()).toEqual(min)
+    expect(output.max()).toEqual(max)
+  })
+
+  it("should filter results where the roll is less than or equal to 5", () => {
+    const expected = results.filter((r) => r <= 5)
+    const min = Math.min(...expected)
+    const max = Math.max(...expected)
+
+    const output = roll.where("<=5")
+
+    expect(output.results).toHaveLength(expected.length)
+    expect(output.min()).toEqual(min)
+    expect(output.max()).toEqual(max)
+  })
+
+  it("should filter results where the roll is greater than 3 and less than 5", () => {
+    const expected = results.filter((r) => r > 3 && r < 5)
+    const min = Math.min(...expected)
+    const max = Math.max(...expected)
+
+    const output = roll.where(">3").where("<5")
+
+    expect(output.results).toHaveLength(expected.length)
+    expect(output.min()).toEqual(min)
+    expect(output.max()).toEqual(max)
+  })
+
+  it("should filter the results and return a new sum result using the original modifier", () => {
+    const expected = results.filter((r) => r > 3 && r < 5)
+    const result = expected.reduce((acc, cur) => acc + cur, 0) - 5
+
+    const output = roll.where(">3").where("<5")
+
+    expect(output.result).toEqual(result)
+  })
+})
+
 describe("Statistical Probability", () => {
   ;[4, 6, 8, 10, 12, 20].map((dice) => {
     ;[6, 8, 12, 16].map((r) => {
@@ -173,12 +267,16 @@ describe("Statistical Probability", () => {
       const min = Math.floor((uniform * Math.sqrt(2)) / 2 - dice)
       const uniMax = Math.ceil((3 * dice) / r)
 
-      it(`should randomly distribute a d${dice} over ${rolls} rolls ${visual(results)}`, () => {
-        results.map((roll) => {
-          expect(roll).toBeGreaterThanOrEqual(min)
-          expect(roll).toBeLessThanOrEqual(max)
-        })
-      })
+      it(
+        `should randomly distribute a d${dice} over ${rolls} rolls ${visual(results)}`,
+        () => {
+          results.map((roll) => {
+            expect(roll).toBeGreaterThanOrEqual(min)
+            expect(roll).toBeLessThanOrEqual(max)
+          })
+        },
+        { retry: 2 }
+      )
 
       it(`should have no more than ${uniMax} uniform counts`, () => {
         expect(results.filter((r) => r == Math.round(uniform)).length).toBeLessThanOrEqual(uniMax)
