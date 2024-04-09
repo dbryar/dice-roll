@@ -50,59 +50,34 @@ describe("Roll.minMax static method", () => {
 })
 
 describe("Specify a Dice to roll", () => {
-  it("should roll a d4", () => {
-    const roll = new Roll("1d4")
+  it.each([4, 6, 8, 10, 12, 20])("should roll a d%d", (faces) => {
+    const roll = new Roll(`1d${faces}`)
+    expect(roll.faces).toBe(faces)
     expect(roll.result).toBeGreaterThanOrEqual(1)
-    expect(roll.result).toBeLessThanOrEqual(4)
-  })
-
-  it("should roll a d6", () => {
-    const roll = new Roll("1d6")
-    expect(roll.result).toBeGreaterThanOrEqual(1)
-    expect(roll.result).toBeLessThanOrEqual(6)
-  })
-
-  it("should roll a d8", () => {
-    const roll = new Roll("1d8")
-    expect(roll.result).toBeGreaterThanOrEqual(1)
-    expect(roll.result).toBeLessThanOrEqual(8)
-  })
-
-  it("should roll a d10", () => {
-    const roll = new Roll("1d10")
-    expect(roll.result).toBeGreaterThanOrEqual(1)
-    expect(roll.result).toBeLessThanOrEqual(10)
-  })
-
-  it("should roll a d12", () => {
-    const roll = new Roll("1d12")
-    expect(roll.result).toBeGreaterThanOrEqual(1)
-    expect(roll.result).toBeLessThanOrEqual(12)
-  })
-
-  it("should roll a d20", () => {
-    const roll = new Roll("1d20")
-    expect(roll.result).toBeGreaterThanOrEqual(1)
-    expect(roll.result).toBeLessThanOrEqual(20)
+    expect(roll.result).toBeLessThanOrEqual(faces)
   })
 })
 
 describe("A non-specific roll", () => {
   it("should roll a d20 (with no arguments)", () => {
     const roll = new Roll()
+    expect(roll.faces).toBe(20)
     expect(roll.result).toBeGreaterThanOrEqual(1)
     expect(roll.result).toBeLessThanOrEqual(20)
   })
 
   it("should roll a d20 (for anything but d4, d6, d8, d10, d12 or d20)", () => {
-    const results = Array.from({ length: 128 }, () => new Roll("1d7").result)
-    expect(Math.max(...results)).toEqual(20)
+    const roll1 = new Roll("1d7")
+    expect(roll1.faces).toBe(20)
+    const roll2 = new Roll("invalid")
+    expect(roll2.faces).toBe(20)
   })
 })
 
 describe("Specify a quantity of Dice", () => {
   it("should roll 3d6", () => {
     const roll = new Roll("3d6")
+    expect(roll.faces).toBe(6)
     expect(roll.results).toHaveLength(3)
     expect(roll.result).toBeGreaterThanOrEqual(3)
     expect(roll.result).toBeLessThanOrEqual(18)
@@ -114,6 +89,8 @@ describe("Specify a quantity of Dice", () => {
 
   it("should roll 3d6 with a +5 modifier", () => {
     const roll = new Roll("3d6", 5)
+    expect(roll.faces).toBe(6)
+    expect(roll.modifier).toBe(5)
     expect(roll.results).toHaveLength(3)
     expect(roll.result).toBeGreaterThanOrEqual(9)
     expect(roll.result).toBeLessThanOrEqual(23)
@@ -121,11 +98,12 @@ describe("Specify a quantity of Dice", () => {
       expect(r).toBeGreaterThanOrEqual(1)
       expect(r).toBeLessThanOrEqual(6)
     })
-    expect(roll.modifier).toBe(5)
   })
 
   it("should roll 2d12 with a -2 modifier", () => {
     const roll = new Roll("2d12", -2)
+    expect(roll.faces).toBe(12)
+    expect(roll.modifier).toBe(-2)
     expect(roll.results).toHaveLength(2)
     expect(roll.result).toBeGreaterThanOrEqual(0)
     expect(roll.result).toBeLessThanOrEqual(22)
@@ -133,7 +111,6 @@ describe("Specify a quantity of Dice", () => {
       expect(r).toBeGreaterThanOrEqual(1)
       expect(r).toBeLessThanOrEqual(12)
     })
-    expect(roll.modifier).toBe(-2)
   })
 })
 
@@ -154,7 +131,7 @@ describe("Rolling 32d6", () => {
     expect(Math.min(...distribution)).toBeLessThan(Math.max(...distribution))
   })
 
-  it(`should have a non-uniform distribution ${visual(distribution)}`, () => {
+  it(`should have a fair but non-uniform distribution ${visual(distribution)}`, () => {
     expect(distribution.filter((v, i, a) => a.indexOf(v) === i).length).toBeGreaterThan(2)
     distribution.map((v) => {
       expect(v).toBeGreaterThanOrEqual(0)

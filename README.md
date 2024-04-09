@@ -72,7 +72,7 @@ The resulting object from calling a `new Roll()` contains the following `readonl
 The `Roll` class also has two static helper methods
 
 - `Roll.d(n)` to roll a single dice with `n` faces, and
-- `Roll.minMax("3d6")` to calculate and return the minimum and maximum values for the roll, with optional modifier
+- `Roll.minMax(dice)` to calculate and return the minimum and maximum values for the `dice` roll, with optional modifier
 
 ```js
 const roll = Roll.d(20) // 1-20
@@ -95,8 +95,8 @@ roll.min() // 2
 
 roll.count() // { 1: 0, 2: 1, 3: 2, 4: 0, 5: 1, 6: 1, 7: 0, 8: 1 }
 roll.count(8) // 1
-roll.count()[8] // 1
-roll.count(">5") // 2
+roll.count()[3] // 2 (alternate method)
+roll.count(">5") // 2 (same as `.where(">5").results.length`)
 
 roll.where("<=3").results // [ 2, 3, 3 ]
 
