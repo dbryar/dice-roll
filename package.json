@@ -6,7 +6,7 @@
   },
   "module": "dist/dice-roll.js",
   "main": "dist/dice-roll.js",
-  "types": "dist/types",
+  "types": "dist/types/index.d.ts",
   "type": "module",
   "version": "1.0.1",
   "description": "A simple dice rolling library",
@@ -23,7 +23,7 @@
     "typescript": "^5.2.2"
   },
   "repository": {
-    "url": "https://github.com/dbryar/dice-roll"
+    "url": "git+https://github.com/dbryar/dice-roll.git"
   },
   "keywords": [
     "dice",
