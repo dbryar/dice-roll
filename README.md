@@ -16,12 +16,12 @@ The Dice Roll library is a lightweight, dependency-free tool designed to facilit
 
 To use the Dice Roll Library in your project, simply download the provided JavaScript file (dice-roll.js) and include it in your project directory.
 
-```html
-<script src="dice-roll.js"></script>
+```sh
+bun add dice-rolls
 ```
 
 ```ts
-import Roll from "dice-roll"
+import Roll from "dice-rolls"
 ```
 
 ### Usage
@@ -85,9 +85,9 @@ Contributions to the Dice Roll Library are welcome! If you have ideas for improv
 
 ### License
 
-The Dice Roll Library is open source and released under the MIT License. See the LICENSE file for details.
+The Dice Roll Library is open source and released under the Apache License, Version 2.0. See the LICENSE file for details.
 
-For more information, please visit our GitHub repository.
+For more information, please visit the GitHub repository.
 
 #### Tests
 
